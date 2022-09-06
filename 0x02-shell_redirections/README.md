@@ -1,1 +1,1 @@
-Write a script that displays all users and their home directories, sorted by users
+script that takes a list of words as input and prints only
