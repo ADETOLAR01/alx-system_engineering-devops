@@ -1,1 +1,1 @@
-a shell script that creates a file named exactly Best school
+Write a script that writes into the file ls cwd content
