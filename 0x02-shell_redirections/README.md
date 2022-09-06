@@ -1,1 +1,1 @@
-Write a script that writes into the file ls cwd content
+Write a script that duplicates the last line of the file iacta
