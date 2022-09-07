@@ -1,1 +1,1 @@
-script that creates a file named exactly
+script that lists all the files
