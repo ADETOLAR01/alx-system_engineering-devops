@@ -1,1 +1,1 @@
-Create a script that ldisplays the result of BREATH to the power LOVE
+Create a script should display the number in base 10
