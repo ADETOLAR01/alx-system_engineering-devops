@@ -1,1 +1,1 @@
-Create a script that prints the result of POWER divided by DIVIDE
+Create a script that ldisplays the result of BREATH to the power LOVE
