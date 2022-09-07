@@ -1,1 +1,1 @@
-script that takes a list of words as input and prints
+Display lines containing the pattern
