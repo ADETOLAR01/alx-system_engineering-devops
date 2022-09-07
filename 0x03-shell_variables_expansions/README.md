@@ -1,1 +1,1 @@
-Create a script should display the number in base 10
+Create a script that prints all possible combinations of two letters
