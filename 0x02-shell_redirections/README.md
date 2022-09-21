@@ -1,1 +1,1 @@
-script that parses web servers logs in TSV format
+Display the content of the /etc/passwd file
