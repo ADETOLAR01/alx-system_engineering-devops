@@ -84,10 +84,7 @@ Note that `docker` command will pull the Ubuntu docker container image from the 
 
 </details>
 
-## Tasks
 
-<details>
-<summary><a href="./0-give_me_a_page">0. Give me a page!</a></summary><br>
 <a href='https://postimages.org/' target='_blank'><img src='https://i.postimg.cc/yxybJXPm/image.png' border='0' alt='image'/></a>
 <br>
 <ul>
