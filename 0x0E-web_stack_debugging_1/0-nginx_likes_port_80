@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
-
-This script installs Nginx and configures it to listen on port 80 of all the server's active IPv4 IPs
-
-apt-get update
-apt-get install -y nginx
-rm /etc/nginx/sites-available/default
-echo 'server{listen 80;listen [::]:80 ipv6only=on;server_name _;root /var/www/html;index index.html;}' > /etc/nginx/sites-available/server.conf
-ln -s /etc/nginx/sites-available/server.conf /etc/nginx/sites-enabled/
-nginx -t && systemctl restart nginx
-echo "Nginx is now listening on port 80 of all the server's active IPv4 IPs." > /var/www/html/index.html
+# debugging nginx port 80
+# How I solved it: delete the existing ../sites-enabled/default and replace it with a copy of
+# ../sites-available/default. You do that by creating a symbolic link. 
+# NB: The flag -s creates a symbolic link, -f deletes the existing file and replaces it
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo service nginx restart
