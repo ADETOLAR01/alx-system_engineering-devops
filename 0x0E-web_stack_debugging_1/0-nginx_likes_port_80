@@ -1,40 +1,12 @@
 #!/usr/bin/env bash
 
-This script installs Nginx and configures it to listen on port 80 for all active IPv4 IPs.
-Install Nginx
+This script installs Nginx and configures it to listen on port 80 of all the server's active IPv4 IPs in 5 lines
 
-sudo apt-get update
-sudo apt-get install -y nginx
-
-Configure Nginx
-
-sudo sed -i '/listen 
-:
-:
-:::80 default_server;/c\listen 80 default_server;' /etc/nginx/sites-available/default
-
-Restart Nginx
-
-sudo systemctl restart nginx
-
-Verify that Nginx is listening on port 80
-
-sudo ss -tlnp | grep nginx | grep ':80'
-
-Verify that Nginx is accessible from outside the container
-
-curl http://localhost:80
-
-Get the list of all active IPv4 IPs
-
-ips=$(hostname -I | awk '{print $1}')
-
-Add a rule to the firewall to allow incoming traffic to port 80
-
-for ip in $ips; do
-sudo ufw allow from $ip to any port 80 proto tcp
-done
-
-Print a message indicating that the setup is complete
-
-echo "Nginx is now listening on port 80 for all active IPv4 IPs."
+apt-get update
+apt-get install -y nginx
+rm /etc/nginx/sites-available/default
+echo 'server{listen 80;listen [::]:80 ipv6only=on;server_name _;root /var/www/html;index index.html;}' > /etc/nginx/sites-available/server.conf
+ln -s /etc/nginx/sites-available/server.conf /etc/nginx/sites-enabled/
+nginx -t
+systemctl stop nginx
+echo "service (init) must say that nginx is not running" > /var/www/html/index.html
