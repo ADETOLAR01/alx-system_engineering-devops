@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-This script installs Nginx and configures it to listen on port 80 of all the server's active IPv4 IPs
+This script installs Nginx and configures it to listen on port 80 of all the server's active IPv4 IPs in 5 lines
 
 apt-get update
 apt-get install -y nginx
 rm /etc/nginx/sites-available/default
 echo 'server{listen 80;listen [::]:80 ipv6only=on;server_name _;root /var/www/html;index index.html;}' > /etc/nginx/sites-available/server.conf
 ln -s /etc/nginx/sites-available/server.conf /etc/nginx/sites-enabled/
-nginx -t && systemctl restart nginx
+nginx -t
+systemctl stop nginx
 echo "service (init) must say that nginx is not running" > /var/www/html/index.html
