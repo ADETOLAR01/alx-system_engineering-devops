@@ -1,7 +1,14 @@
-file { '/home/user/.ssh/config':
+file { '/home/ubuntu/.ssh/config':
   ensure => file,
-  owner  => 'user',
-  group  => 'user',
+  owner  => 'ubuntu',
+  group  => 'ubuntu',
   mode   => '0600',
-  content => "Host example.com\n  IdentityFile ~/.ssh/school\n  PasswordAuthentication no\n",
+}
+
+augeas { 'configure ssh client':
+  context => '/files/home/ubuntu/.ssh/config',
+  changes => [
+    'set Host/* IdentityFile /home/ubuntu/.ssh/school',
+    'set Host/* PasswordAuthentication no',
+  ],
 }
