@@ -1,7 +1,6 @@
-# ssh Config File
-
-Host localhost
-  HostName <127.0.0.1>
-  User ubuntu
-  IdentityFile ~/.ssh/school
-  PasswordAuthentication no
+#!/usr/bin/env bash
+# Client configuration file
+# file with user config
+Host 54.210.83.3
+IdentityFile ~/.ssh/school
+PasswordAuthentication no
