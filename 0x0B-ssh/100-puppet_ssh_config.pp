@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 file { '/home/ubuntu/.ssh/config':
   ensure => file,
   owner  => 'ubuntu',
