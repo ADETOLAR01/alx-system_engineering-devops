@@ -1,16 +1,15 @@
-# Setting up my client config file
-include stdlib
-
-file_line { 'Turn off passwd auth':
-  ensure => present,
-  path   => '/etc/ssh/ssh_config',
-  line   => '    PasswordAuthentication no',
-  replace => true,
+#!/usr/bin/env bash
+file { '/home/ubuntu/.ssh/config':
+  ensure => file,
+  owner  => 'ubuntu',
+  group  => 'ubuntu',
+  mode   => '0600',
 }
 
-file_line { 'Delare identity file':
-  ensure => present,
-  path   => '/etc/ssh/ssh_config',
-  line   => '     IdentityFile ~/.ssh/school',
-  replace => true,
+augeas { 'configure ssh client':
+  context => '/files/home/ubuntu/.ssh/config',
+  changes => [
+    'set Host/* IdentityFile /home/ubuntu/.ssh/school',
+    'set Host/* PasswordAuthentication no',
+  ],
 }
