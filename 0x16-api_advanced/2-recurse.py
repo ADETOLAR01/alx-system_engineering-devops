@@ -1,14 +1,12 @@
 #!/usr/bin/python3
 '''Get ALL articles for a given subreddit'''
-import pprint
 import requests
 
-BASE_URL = 'http://reddit.com/r/{}/hot.json'
 
 
 def recurse(subreddit, hot_list=[], after=None):
     ''' function recurse :Get ALL hot posts'''
-    headers = {'User-agent': 'Unix:0-subs:v1'}
+    headers = {'User-agent': 'this_is_a_fake_subreddit'}
     params = {'limit': 100}
     if isinstance(after, str):
         if after != "STOP":
