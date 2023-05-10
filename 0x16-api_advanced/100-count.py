@@ -1,15 +1,13 @@
 #!/usr/bin/python3
 '''Task 3 : Count it!'''
-import pprint
-import re
+
 import requests
 
-BASE_URL = 'http://reddit.com/r/{}/hot.json'
 
 
 def count_words(subreddit, word_list, hot_list=[], after=None):
     '''function count_words : Get ALL hot posts'''
-    headers = {'User-agent': 'Unix:0-subs:v1'}
+    headers = {'User-agent': 'this_is_a_fake_subreddit'}
     params = {'limit': 100}
     if isinstance(after, str):
         if after != "STOP":
