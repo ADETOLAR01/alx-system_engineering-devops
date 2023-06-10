@@ -1,10 +1,30 @@
 #!/usr/bin/env bash
-
-apt-get update 
+# Installs, configures, and starts the server
+apt-get update
 apt-get -y install nginx
+sudo ufw allow 'Nginx HTTP'
+mkdir -p /var/www/html/
+sudo chmod -R 755 /var/www
+echo 'Hello World!' > /var/www/html/index.html
+SERVER_CONFIG=\
+"server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	root /var/www/html;
+	index index.html index.htm index.nginx-debian.html;
+	server_name _;
+	location / {
+		try_files \$uri \$uri/ =404;
+	}
+	if (\$request_filename ~ redirect_me){
+		rewrite ^ https://sketchfab.com/bluepeno/models permanent;
+	}
+}"
 
-echo "Hello World!" > /var/www/html/index.nginx-debian.html
-echo '    return 301 https://example.com/new_page;' >> /etc/nginx/nginx-debian.html/default
-echo '}' >> /etc/nginx/nginx-debian.html/default
-sed -i 's/listen\s*80/listen 80 curl 54.210.83.3/g' /etc/nginx/nginx-debian.html/default
-service nginx restart
+bash -c "echo -e '$SERVER_CONFIG' > /etc/nginx/sites-enabled/default"
+
+if [ "$(pgrep -c nginx)" -le 0 ]; then
+	service nginx start
+else
+	service nginx restart
+fi
