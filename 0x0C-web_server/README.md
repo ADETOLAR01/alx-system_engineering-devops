@@ -1,1 +1,1 @@
-web-01
+l-install_nginx_web_server
