@@ -1,6 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-sudo apt-get update
-sudo apt-get install -y net-tools nginx
-sudo sed -i '/listen 80;/a \\tlisten [::]:80;' /etc/nginx/nginx.conf
-sudo systemctl restart nginx
+# Install nginx if not already installed
+apt-get -y update
+apt-get -y install nginx
+
+# Start nginx service
+service nginx start
+
+# Check if Nginx is running
+if service nginx status | grep -q "active (running)"; then
+    echo "Nginx is running."
+else
+    echo "Nginx is not running."
+fi
