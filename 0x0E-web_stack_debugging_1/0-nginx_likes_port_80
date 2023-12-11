@@ -1,10 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Check if port 80 is in use
 if netstat -tulpn | grep -q :80; then
   # Get the PID of the process using port 80
   pid=$(netstat -tulpn | grep :80 | awk '{print $7}' | cut -d/ -f1)
   # Kill the process
-  kill -9 $pid
+  kill -9 "$pid"
+
 fi
 # Check if Nginx is listening on port 80
 if ! grep -q "listen 80;" /etc/nginx/nginx.conf; then
