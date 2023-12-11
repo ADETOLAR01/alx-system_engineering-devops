@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
-# Install nginx if not already installed[^1^][1]
-apt-get -y update
-apt-get -y install nginx
-# Start nginx service
-service nginx start
+#!/bin/bash
+
+sudo apt-get update
+sudo apt-get install -y net-tools nginx
+sudo sed -i '/listen 80;/a \\tlisten [::]:80;' /etc/nginx/nginx.conf
+sudo systemctl restart nginx
