@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
 # using ssh to connect to a server
 
-ssh -i ubuntu ~/.ssh/school 
+# Server details
+username="ubuntu"
+ip="100.26.231.131"
+private_key="~/.ssh/school"
+
+# Use ssh with single-character flags
+ssh -i "$private_key" "$username@$ip"
