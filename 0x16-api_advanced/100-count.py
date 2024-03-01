@@ -4,38 +4,47 @@
 
 import requests
 
-def recurse(subreddit, hot_list=[], after=None):
-    # Base case: invalid subreddit or no more pages
-    if after is "":
+
+def count_words(subreddit, word_list, after='', word_dict={}):
+    """ A function that queries the Reddit API parses the title of
+    all hot articles, and prints a sorted count of given keywords
+    (case-insensitive, delimited by spaces.
+    Javascript should count as javascript, but java should not).
+    If no posts match or the subreddit is invalid, it prints nothing.
+    """
+
+    if not word_dict:
+        for word in word_list:
+            if word.lower() not in word_dict:
+                word_dict[word.lower()] = 0
+
+    if after is None:
+        wordict = sorted(word_dict.items(), key=lambda x: (-x[1], x[0]))
+        for word in wordict:
+            if word[1]:
+                print('{}: {}'.format(word[0], word[1]))
         return None
-    
-    # Set the base URL and the headers for the API request
-    base_url = "https://www.reddit.com/r/"
-    headers = {"User-Agent": "python:redquery:v1.0 (by /u/redquery)"}
 
-    # Append the after parameter if given
-    if after is not None:
-        url = base_url + subreddit + "/hot.json?after=" + after
-    else:
-        url = base_url + subreddit + "/hot.json"
+    url = 'https://www.reddit.com/r/{}/hot/.json'.format(subreddit)
+    header = {'user-agent': 'redquery'}
+    parameters = {'limit': 100, 'after': after}
+    response = requests.get(url, headers=header, params=parameters,
+                            allow_redirects=False)
 
-    # Make the request and get the JSON response
-    response = requests.get(url, headers=headers, allow_redirects=False)
-    data = response.json()
-
-    # Check if the response is valid
-    if response.status_code == 200:
-        # Get the list of posts and the next page token
-        posts = data["data"]["children"]
-        after = data["data"]["after"]
-
-        # Loop through the posts and append the titles to the hot_list
-        for post in posts:
-            title = post["data"]["title"]
-            hot_list.append(title)
-
-        # Recursively call the function with the next page token
-        return recurse(subreddit, hot_list, after)
-    else:
-        # Invalid subreddit or request error
+    if response.status_code != 200:
         return None
+
+    try:
+        hot = response.json()['data']['children']
+        aft = response.json()['data']['after']
+        for post in hot:
+            title = post['data']['title']
+            lower = [word.lower() for word in title.split(' ')]
+
+            for word in word_dict.keys():
+                word_dict[word] += lower.count(word)
+
+    except Exception:
+        return None
+
+    count_words(subreddit, word_list, aft, word_dict)

@@ -5,20 +5,13 @@ Contains the number_of_subscribers function
 
 import requests
 
+
 def number_of_subscribers(subreddit):
-    # Set the custom User-Agent header
-    headers = {'User-Agent': 'python:subscribers:v1.0.0 (by /u/wintermancer)'}
-
-    # Construct the URL with the subreddit name
-    url = 'https://www.reddit.com/r/{}/about.json'.format(subreddit)
-
-    # Send a GET request to the URL
-    response = requests.get(url, headers=headers, allow_redirects=False)
-
-    # Check the status code and the response JSON
-    if response.status_code == 200 and response.json().get('kind') == 't5':
-        # Return the number of subscribers from the JSON data
-        return response.json().get('data').get('subscribers')
-    else:
-        # Return 0 if the subreddit is invalid or an error occurs
+    """returns the number of subscribers for a given subreddit"""
+    if subreddit is None or type(subreddit) is not str:
         return 0
+    r = requests.get('http://www.reddit.com/r/{}/about.json'.format(subreddit),
+                     headers={'User-Agent': '0x16-api_advanced:project:\
+v1.0.0 (by /u/firdaus_cartoon_jr)'}).json()
+    subs = r.get("data", {}).get("subscribers", 0)
+    return subs
