@@ -1,22 +1,5 @@
 #!/usr/bin/env bash
-# Check if port 80 is in use
-if netstat -tulpn | grep -q :80; then
-  # Get the PID of the process using port 80
-  pid=$(netstat -tulpn | grep :80 | awk '{print $7}' | cut -d/ -f1)
-  # Kill the process
-  kill -9 "$pid"
+# configures a server to listening on port 80 of all servers active IPv4 IPs
 
-fi
-# Check if Nginx is listening on port 80
-if ! grep -q "listen 80;" /etc/nginx/nginx.conf; then
-  # Add the listen directive to the configuration file
-  sed -i '/server {/a \ \tlisten 80;' /etc/nginx/nginx.conf
-fi
-# Check if server_name matches the server's IP address
-ip=$(hostname -I | cut -d' ' -f1)
-if ! grep -q "server_name $ip;" /etc/nginx/nginx.conf; then
-  # Add or modify the server_name directive
-  sed -i "/server_name/c \ \tserver_name $ip;" /etc/nginx/nginx.conf
-fi
-# Restart Nginx
-service nginx restart
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo service nginx restart
