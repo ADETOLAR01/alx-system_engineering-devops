@@ -41,7 +41,7 @@ frontend droyalzit-frontend
         default_backend droyalzit-backend
 
 frontend droyalzit-frontend-https
-        bind *:443 ssl crt /etc/haproxy/certs/droyalzit.tech.pem
+        bind *:443 ssl crt /etc/haproxy/certs/www.droyalzit.tech.pem
         http-request set-header X-Forwarded-Proto https
         default_backend droyalzit-backend
 
