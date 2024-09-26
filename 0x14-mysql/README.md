@@ -10,7 +10,3 @@ What you should learn from this project:
 * What operation should you regularly perform to make sure that your database backup strategy actually works
 
 ---
----
-
-## Author
-* **Jhoan Stiven Zamora Caicedo** - [jzamora5](https://github.com/jzamora5)
