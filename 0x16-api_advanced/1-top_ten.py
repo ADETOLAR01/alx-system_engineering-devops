@@ -1,21 +1,19 @@
 #!/usr/bin/python3
-"""
-Module for requesting the Reddit API
-"""
+"""Function to query subscribers on a given Reddit subreddit."""
+import sys
 import requests
-URL = 'https://www.reddit.com'
-
 
 def top_ten(subreddit):
-    """Prints the top 10 hot post listed for a given subreddit"""
-    try:
-        endpoint = '/r/{}/hot.json?limit=10'.format(subreddit)
-        headers = {"User-Agent": "Custom Agen"}
-        res = requests.get(URL+endpoint,
-                           headers=headers,
-                           allow_redirects=False)
-        children = res.json().get('data').get('children')
-        for i in range(10):
-            print(children[i].get('data').get('title'))
-    except Exception:
+    url = f"https://www.reddit.com/r/{subreddit}/hot.json?limit=10"
+    headers = {'User-Agent': 'this_is_a_fake_subreddit'}
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code != 200:
         print(None)
+        return
+        
+    data = response.json()
+    posts = data["data"]["children"]
+    
+    for post in posts:
+        print(post["data"]["title"])

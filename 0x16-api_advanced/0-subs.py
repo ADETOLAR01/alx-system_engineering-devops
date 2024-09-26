@@ -1,19 +1,13 @@
 #!/usr/bin/python3
-"""
-Module for requesting the Reddit API
-"""
+"""function that queries the Reddit API"""
 import requests
-URL = 'https://www.reddit.com'
-
+import sys
 
 def number_of_subscribers(subreddit):
-    """Queries and returns the number of subcribers of a given subreddit"""
-    try:
-        endpoint = '/r/{}/about.json'.format(subreddit)
-        headers = {"User-Agent": "Custom Agent"}
-        res = requests.get(URL + endpoint,
-                           headers=headers,
-                           allow_redirects=False)
-        return res.json().get('data').get('subscribers')
-    except Exception:
+    user = {"User-Agent": "this_is_a_fake_subreddit"}
+    request = requests.get("https://www.reddit.com/r/{}/about.json"
+                           .format(subreddit), headers=user)
+    if request.status_code == 200:
+        return request.json().get("data").get("subscribers")
+    else:
         return 0
