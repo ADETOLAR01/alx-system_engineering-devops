@@ -1,28 +1,35 @@
 #!/usr/bin/python3
-"""Module for task 2"""
+"""
+Module for requesting the Reddit API
+"""
+import requests
+URL = 'https://www.reddit.com'
+headers = {"User-Agent": "Custom Agent"}
 
 
-def recurse(subreddit, hot_list=[], count=0, after=None):
-    """Queries the Reddit API and returns all hot posts
-    of the subreddit"""
-    import requests
+def fetch_hot_posts(uri, after=None, hot_list=[]):
+    """Recursive function for the job"""
+    parameters = {}
+    if after:
+        parameters['after'] = after
+    res = requests.get(uri,
+                       headers=headers,
+                       allow_redirects=False,
+                       params=parameters)
+    if res.status_code == 200:
+        children = res.json().get('data').get('children')
+        for child in children:
+            hot_list.append(child.get('data').get('title'))
+        next_ = res.json().get('data').get('after')
+        if next_ is not None:
+            fetch_hot_posts(uri, next_, hot_list)
+        return hot_list
 
-    sub_info = requests.get("https://www.reddit.com/r/{}/hot.json"
-                            .format(subreddit),
-                            params={"count": count, "after": after},
-                            headers={"User-Agent": "My-User-Agent"},
-                            allow_redirects=False)
-    if sub_info.status_code >= 400:
-        return None
 
-    hot_l = hot_list + [child.get("data").get("title")
-                        for child in sub_info.json()
-                        .get("data")
-                        .get("children")]
-
-    info = sub_info.json()
-    if not info.get("data").get("after"):
-        return hot_l
-
-    return recurse(subreddit, hot_l, info.get("data").get("count"),
-                   info.get("data").get("after"))
+def recurse(subreddit, hot_list=[]):
+    """Fetchs the top hot posts listed for a given subreddit"""
+    try:
+        uri = URL + '/r/{}/hot.json'.format(subreddit)
+        return fetch_hot_posts(uri)
+    except Exception as e:
+        print(e)

@@ -1,18 +1,21 @@
 #!/usr/bin/python3
-"""Module for task 1"""
+"""
+Module for requesting the Reddit API
+"""
+import requests
+URL = 'https://www.reddit.com'
 
 
 def top_ten(subreddit):
-    """Queries the Reddit API and returns the top 10 hot posts
-    of the subreddit"""
-    import requests
-
-    sub_info = requests.get("https://www.reddit.com/r/{}/hot.json?limit=10"
-                            .format(subreddit),
-                            headers={"User-Agent": "My-User-Agent"},
-                            allow_redirects=False)
-    if sub_info.status_code >= 300:
-        print('None')
-    else:
-        [print(child.get("data").get("title"))
-         for child in sub_info.json().get("data").get("children")]
+    """Prints the top 10 hot post listed for a given subreddit"""
+    try:
+        endpoint = '/r/{}/hot.json?limit=10'.format(subreddit)
+        headers = {"User-Agent": "Custom Agen"}
+        res = requests.get(URL+endpoint,
+                           headers=headers,
+                           allow_redirects=False)
+        children = res.json().get('data').get('children')
+        for i in range(10):
+            print(children[i].get('data').get('title'))
+    except Exception:
+        print(None)
