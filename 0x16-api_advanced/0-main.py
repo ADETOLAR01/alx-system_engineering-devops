@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """
-0-main
+0-main.py
 """
+
 import sys
 
 if __name__ == '__main__':
