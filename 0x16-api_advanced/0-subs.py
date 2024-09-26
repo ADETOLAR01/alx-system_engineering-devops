@@ -7,21 +7,30 @@ import requests
 
 
 def number_of_subscribers(subreddit):
-    """Returns the number of subscribers for a given subreddit"""
-    if subreddit is None or not isinstance(subreddit, str):
+    """
+    Queries the Reddit API and returns the number of subscribers for a given subreddit.
+    
+    Returns 0 if the subreddit is invalid or doesn't exist.
+    """
+    if not isinstance(subreddit, str):
         return 0
+
+    url = f'https://www.reddit.com/r/{subreddit}/about.json'
+    headers = {
+        'User-Agent': '0x16-api_advanced:project:v1.0.0 (by /u/firdaus_cartoon_jr)'
+    }
+
     try:
-        r = requests.get(
-            'http://www.reddit.com/r/{}/about.json'.format(subreddit),
-            headers={'User-Agent': '0x16-api_advanced:project:v1.0.0 (by /u/firdaus_cartoon_jr)'}
-        )
-        r.raise_for_status()
-        subs = r.json().get("data", {}).get("subscribers", 0)
-        return subs
-    except requests.RequestException:
+        response = requests.get(url, headers=headers, allow_redirects=False, timeout=10)
+
+        # Check if subreddit is valid (status code 200 indicates success)
+        if response.status_code == 200:
+            data = response.json()
+            return data.get("data", {}).get("subscribers", 0)
+
+        # Invalid subreddit (status code 404 or redirect)
         return 0
 
-
-if __name__ == "__main__":
-    subreddit = input("Enter subreddit name: ")
-    print("Number of subscribers:", number_of_subscribers(subreddit))
+    except requests.exceptions.RequestException as e:
+        # In case of request failure or network issue, return 0
+        return 0
