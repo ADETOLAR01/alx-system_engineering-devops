@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
-# Running whoami with a given parameter
+# Runs the whoami command with the user passing the command
 
-su  "$1" -s /bin/bash -c "whoami"
+if [ $# -eq 0 ]; then
+  echo "Usage: $0 <username>"
+  exit 1
+fi
+
+sudo -u "$1" whoami
+
