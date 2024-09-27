@@ -15,8 +15,3 @@ What you should learn from this project:
 
 ### [2. 7 lines or less](./100-fix_in_7_lines_or_less)
 * Using what you did for task #1, make your fix short and sweet.
-
----
-
-## Author
-* **Jhoan Stiven Zamora Caicedo** - [jzamora5](https://github.com/jzamora5)
